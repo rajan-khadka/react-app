@@ -1,4 +1,4 @@
-// Chakra imports
+// Chakra import
 import { Portal, Box, useDisclosure } from "@chakra-ui/react";
 import Footer from "components/footer/FooterAdmin.js";
 // Layout components
