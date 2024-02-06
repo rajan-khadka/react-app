@@ -31,7 +31,7 @@ jobs:
 
       - name: Install Package
         if: steps.npm-cache.outputs.cache-hit != 'true'
-        run: npm ci
+        run: npm install
 
       - name: Build Application
         run: npm run build
