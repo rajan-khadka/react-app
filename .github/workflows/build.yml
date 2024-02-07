@@ -90,7 +90,7 @@ jobs:
                                   {
                                     "keyValue": {
                                         "topLabel": "PR Title",
-                                        "content": "${{ github.event.pull_request.title }}"
+                                        "content": "${{ github.event.pull_request.title }} >>> Labels: ${{ join(github.event.issue.labels.*.name, ', ') }} "
                                     }
                                   },
                                   {
