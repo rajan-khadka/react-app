@@ -11,7 +11,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
+  build-image:
     runs-on: ubuntu-latest
 
     steps:
@@ -23,9 +23,7 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD}}
         run: |
-          echo "$DOCKER_USERNAME"
-          echo "$DOCKER_PASSWORD"
-          docker login -u $DOCKER_USERNAME --password-stdin
+          echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAME --password-stdin
 
       - name: Building Docker image
         run: |
