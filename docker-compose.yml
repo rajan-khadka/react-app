@@ -2,8 +2,7 @@ version: "3.8"
 
 services:
   web:
-    image: react_app_image
+    image: rajannovelty/react_app_image:latest
     container_name: react_app_container
-    build: .
     ports:
       - 3000:80
