@@ -6,4 +6,4 @@ services:
     container_name: react_app_container
     build: .
     ports:
-      - 3000:3000
+      - 3000:80
