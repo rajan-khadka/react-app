@@ -26,11 +26,20 @@ jobs:
           echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAME --password-stdin
 
       - name: Building Docker image
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         run: |
-          docker build -t rajannovelty/react_app_image:latest .
+          docker build -t $DOCKER_USERNAME/react_app_image:latest .
 
       - name: Push Docker Image
-        run: docker push rajannovelty/react_app_image:latest
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        run: docker push $DOCKER_USERNAME/react_app_image:latest
 
-      - name: Docker ls
+      - name: Remove Docker Image
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        run: docker image rm $DOCKER_USERNAME/react_app_image:latest
+
+      - name: Listing Docker Images
         run: docker image ls
