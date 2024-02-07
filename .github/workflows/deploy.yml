@@ -30,7 +30,7 @@ jobs:
           docker build -t rajannovelty/react_app_image:latest .
 
       - name: Push Docker Image
-        run: docker push rajannovelty/react_app_image:latest/your-repo:latest
+        run: docker push rajannovelty/react_app_image:latest:latest
 
       - name: Docker ls
         run: docker image ls
