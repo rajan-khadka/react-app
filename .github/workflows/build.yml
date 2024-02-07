@@ -84,7 +84,7 @@ jobs:
                                   {
                                     "keyValue": {
                                         "topLabel": "Merge Branch",
-                                        "content": "From ${{ steps.branch-name.outputs.current_branch }} branch To ${{ steps.branch-name.outputs.base_ref_branch }} branch"
+                                        "content": "From ${{ steps.branch-name.outputs.current_branch }} branch >>> ${{ steps.branch-name.outputs.base_ref_branch }} branch"
                                     }
                                   },
                                   {
