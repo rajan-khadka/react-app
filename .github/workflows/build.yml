@@ -1,5 +1,5 @@
 name: Build Application
-run-name: ${{ github.actor }} is pushing application
+run-name: ${{ github.actor }} is creating PR
 
 on:
   pull_request:
