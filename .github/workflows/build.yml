@@ -14,6 +14,10 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -51,10 +55,6 @@ jobs:
     environment: dev
 
     steps:
-      - name: Get branch name
-        id: branch-name
-        uses: tj-actions/branch-names@v7
-
       - name: Post Google Chat Message
         run: |
           curl --location --request POST '${{ secrets.GCHAT_WEBHOOK_URL_DEMO }}' \
@@ -84,7 +84,7 @@ jobs:
                                   {
                                     "keyValue": {
                                         "topLabel": "Merge Branch",
-                                        "content": "From ${{ steps.branch-name.outputs.current_branch }} branch >>> ${{ steps.branch-name.outputs.base_ref_branch }} branch"
+                                        "content": "From ${{ github.event.pull_request.head.ref || github.ref }} branch >>> ${{ github.event.pull_request.base.ref }} branch"
                                     }
                                   },
                                   {
