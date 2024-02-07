@@ -51,11 +51,10 @@ jobs:
           PRIVATE_KEY: ${{ secrets.AWS_SERVER_SSH_KEY }}
           HOST_NAME: ${{ secrets.AWS_SERVER_HOST }}
           USER_NAME: ${{ secrets.AWS_SERVER_USER_NAME }}
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD}}
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 400 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOST_NAME} '
-                docker pull rajannovelty/react_app_image:latest
-                cd /home/ubuntu/demo
-                docker compose down 
-                docker compose up --build -d
+                sh demo.sh
             '
