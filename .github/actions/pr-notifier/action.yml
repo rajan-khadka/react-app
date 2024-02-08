@@ -47,7 +47,6 @@ runs:
   using: composite
   steps:
   - name: Post Google Chat Message
-
     env:
       GCHAT_WEBHOOK: ${{ secrets.GCHAT_WEBHOOK_URL_DEMO }}
     run: |
