@@ -89,7 +89,7 @@ jobs:
                                 {
                                   "keyValue": {
                                       "topLabel": "Commit",
-                                      "content": "${{ github.event.head_commit }}"
+                                      "content": "${{ github.event.head_commit.message }}"
                                   }
                                 },
                                 {
