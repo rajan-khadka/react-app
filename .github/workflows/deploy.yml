@@ -1,12 +1,10 @@
 name: Deploy Application
 run-name: ${{ github.actor }} is pushing PR
 
-# on:
-#   push:
-#     branches:
-#       - dev
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - dev
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
