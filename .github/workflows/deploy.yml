@@ -40,7 +40,7 @@ jobs:
     environment: dev
 
     steps:
-      - name: Login AWS EC2 Server
+      - name: Pushes To AWS EC2 Server
         env:
           PRIVATE_KEY: ${{ secrets.AWS_SERVER_SSH_KEY }}
           HOST_NAME: ${{ secrets.AWS_SERVER_HOST }}
@@ -94,7 +94,7 @@ jobs:
                                 },
                                 {
                                   "keyValue": {
-                                      "topLabel": "Lets welcome the new changes ",
+                                      "topLabel": "Lets Welcome the new changes!!!",
                                       "content": "Successfully Deployed, Kudos to the entire team for making it happen!🫡"
                                   }
                                 },

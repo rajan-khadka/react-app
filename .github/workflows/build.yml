@@ -26,114 +26,48 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Env
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: "npm"
+      # - name: Setup Env
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: 20
+      #     cache: "yarn"
+      #     cache-dependency-path: "**/yarn.lock"
 
-      - name: Cache Packages
-        uses: actions/cache@v3
-        id: npm-cache
-        with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-npm-
+      # - name: Cache Packages
+      #   uses: actions/cache@v3
+      #   id: package-cache
+      #   with:
+      #     path: "**/node_modules"
+      #     key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-yarn-
 
-      - name: Install Package
-        if: steps.npm-cache.outputs.cache-hit != 'true'
-        run: npm install
+      # - name: Install Package
+      #   if: steps.package-cache.outputs.cache-hit != 'true'
+      #   run: yarn
 
-      - name: Build Application
-        run: npm run build
+      # - name: Build Application
+      #   run: yarn build
 
   notify:
     name: Notify PR Created
     runs-on: ubuntu-latest
-    needs: [build]
     environment: dev
 
     steps:
+      - name: Get Code
+        uses: actions/checkout@v4
+
       - name: Post Google Chat Message
-        run: |
-          curl --location --request POST '${{ secrets.GCHAT_WEBHOOK_URL_DEMO }}' \
-          --header 'Content-Type: application/json' \
-          --data-raw '{
-              "cards": [
-                  {
-                    "header": {
-                        "title": "Pull Request",
-                        "subtitle": "Pull Request No: #${{ github.event.pull_request.number }}"
-                    },
-                    "sections": [
-                        {
-                            "widgets": [
-                                {
-                                    "keyValue": {
-                                        "topLabel": "Creator",
-                                        "content": "${{ github.event.pull_request.user.login }}"
-                                    },
-                                  },
-                                  {
-                                    "keyValue": {
-                                        "topLabel": "Repository Name",
-                                        "content": "${{ github.event.repository.name }}"
-                                    }
-                                  },
-                                  {
-                                    "keyValue": {
-                                        "topLabel": "Merge Branch",
-                                        "content": "From ${{ github.event.pull_request.head.ref || github.ref }} branch >>> ${{ github.event.pull_request.base.ref }} branch"
-                                    }
-                                  },
-                                  {
-                                    "keyValue": {
-                                        "topLabel": "PR Title",
-                                        "content": "${{ github.event.pull_request.title }}"
-                                    }
-                                  },
-                                  {
-                                    "keyValue": {
-                                        "topLabel": "Labels",
-                                        "content": "${{ join( github.event.pull_request.labels.*.name, ', ') }}"
-                                    }
-                                  },
-                                  {
-                                    "keyValue": {
-                                        "topLabel": "Requested Reviwers",
-                                        "content": "- ${{ join(github.event.pull_request.requested_reviewers.*.login) }}"
-                                    }
-                                  },
-                                  {
-                                    "keyValue": {
-                                        "topLabel": "Assignees",
-                                        "content": "- ${{ join(github.event.pull_request.assignees.*.login) }}"
-                                    }
-                                  },
-                                  {
-                                    "buttons": [
-                                      {
-                                        "textButton": {
-                                          "text": "OPEN PR",
-                                          "onClick": {
-                                            "openLink": {
-                                              "url": "${{ github.event.pull_request.html_url }}"
-                                            }
-                                          },
-                                        },
-                                      }
-                                    ]
-                                  },
-                                {
-                                  "keyValue": {
-                                      "topLabel": "You are welcome in advance, ${{ github.event.pull_request.user.login }}.",
-                                      "content": "Your dedication and expertise greatly contribute to our project\n success.🫡"
-                                  }
-                                },
-                            ]
-                        }
-                    ],
-                  }
-              ]
-          }'
+        uses: ./.github/actions/pr-notifer
+        with:
+          prNumber: ${{ github.event.pull_request.number }}
+          creator: ${{ github.event.pull_request.user.login }}
+          repo_name: ${{ github.event.repository.name }}
+          source_branch: ${{ github.event.pull_request.head.ref || github.ref }}
+          target_branch: ${{ github.event.pull_request.base.ref }}
+          pr_title: ${{ github.event.pull_request.title }}
+          label: "- ${{ join( github.event.pull_request.labels.*.name, ', ') }}"
+          reviewer: "- ${{ join(github.event.pull_request.requested_reviewers.*.login) }}"
+          assigner: "- ${{ join(github.event.pull_request.assignees.*.login) }}"
+          pr_html_url: ${{ github.event.pull_request.html_url }}
