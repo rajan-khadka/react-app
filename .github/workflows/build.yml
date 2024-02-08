@@ -26,28 +26,28 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # - name: Setup Env
-      #   uses: actions/setup-node@v4
-      #   with:
-      #     node-version: 20
-      #     cache: "yarn"
-      #     cache-dependency-path: "**/yarn.lock"
+      - name: Setup Env
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "yarn"
+          cache-dependency-path: "**/yarn.lock"
 
-      # - name: Cache Packages
-      #   uses: actions/cache@v3
-      #   id: package-cache
-      #   with:
-      #     path: "**/node_modules"
-      #     key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-      #     restore-keys: |
-      #       ${{ runner.os }}-yarn-
+      - name: Cache Packages
+        uses: actions/cache@v3
+        id: package-cache
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
 
-      # - name: Install Package
-      #   if: steps.package-cache.outputs.cache-hit != 'true'
-      #   run: yarn
+      - name: Install Package
+        if: steps.package-cache.outputs.cache-hit != 'true'
+        run: yarn
 
-      # - name: Build Application
-      #   run: yarn build
+      - name: Build Application
+        run: yarn build
 
   notify:
     name: Notify PR Created
@@ -58,9 +58,19 @@ jobs:
       - name: Get Code
         uses: actions/checkout@v4
 
+      - name: Listing
+        run: |
+          ls -la .github
+          echo "===================="
+          ls -la .github/actions
+          echo "===================="
+          ls -la .github/actions/pr-notifier
+          echo "===================="
+
       - name: Post Google Chat Message
-        uses: ./.github/actions/pr-notifer
+        uses: ./.github/actions/pr-notifier
         with:
+          webhook: ${{ secrets.GCHAT_WEBHOOK_URL_DEMO }}
           prNumber: ${{ github.event.pull_request.number }}
           creator: ${{ github.event.pull_request.user.login }}
           repo_name: ${{ github.event.repository.name }}

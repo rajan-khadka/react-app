@@ -42,97 +42,98 @@ inputs:
     required: true
     description: "PR HTML URL"
 
+  webhook:
+    required: true
+    description: "Google Chat Web Hook"
+
 
 runs:
   using: composite
   steps:
   - name: Post Google Chat Message
-
-    env:
-      GCHAT_WEBHOOK: ${{ secrets.GCHAT_WEBHOOK_URL_DEMO }}
-    run: |
-      echo "$GCHAT_WEBHOOK"
-    shell: bash
     # run: |
-    #   curl --location --request POST '$GCHAT_WEBHOOK' \
-    #   --header 'Content-Type: application/json' \
-    #   --data-raw '{
-    #       "cards": [
-    #           {
-    #             "header": {
-    #                 "title": "Pull Request",
-    #                 "subtitle": "Pull Request No: #${{ inputs.prNumber }}"
-    #             },
-    #             "sections": [
-    #                 {
-    #                     "widgets": [
-    #                         {
-    #                             "keyValue": {
-    #                                 "topLabel": "Creator",
-    #                                 "content": "${{ inputs.creator }}"
-    #                             },
-    #                           },
-    #                           {
-    #                             "keyValue": {
-    #                                 "topLabel": "Repository Name",
-    #                                 "content": "${{ inputs.repo_name }}"
-    #                             }
-    #                           },
-    #                           {
-    #                             "keyValue": {
-    #                                 "topLabel": "Merge Branch",
-    #                                 "content": "From ${{ inputs.source_branch }} branch >>> ${{ inputs.target_branch }} branch"
-    #                             }
-    #                           },
-    #                           {
-    #                             "keyValue": {
-    #                                 "topLabel": "PR Title",
-    #                                 "content": "${{ inputs.pr_title }}"
-    #                             }
-    #                           },
-    #                           {
-    #                             "keyValue": {
-    #                                 "topLabel": "Labels",
-    #                                 "content": "${{ inputs.label }} "
-    #                             }
-    #                           },
-    #                           {
-    #                             "keyValue": {
-    #                                 "topLabel": "Requested Reviewers",
-    #                                 "content": "- ${{ inputs.reviewer }}"
-    #                             }
-    #                           },
-    #                           {
-    #                             "keyValue": {
-    #                                 "topLabel": "Assignees",
-    #                                 "content": "- ${{ inputs.assigner }}"
-    #                             }
-    #                           },
-    #                           {
-    #                             "buttons": [
-    #                               {
-    #                                 "textButton": {
-    #                                   "text": "OPEN PR",
-    #                                   "onClick": {
-    #                                     "openLink": {
-    #                                       "url": "${{ inputs.pr_html_url }}"
-    #                                     }
-    #                                   },
-    #                                 },
-    #                               }
-    #                             ]
-    #                           },
-    #                         {
-    #                           "keyValue": {
-    #                               "topLabel": "You are welcome in advance, ${{ inputs.creator }}.",
-    #                               "content": "Your dedication and expertise greatly contribute to our project\n success.🫡"
-    #                           }
-    #                         },
-    #                     ]
-    #                 }
-    #             ],
-    #           }
-    #       ]
-    #   }'
+    #   echo "HELLO"
+    shell: bash
+    run: |
+      curl --location --request POST '${{ inputs.webhook }}' \
+      --header 'Content-Type: application/json' \
+      --data-raw '{
+          "cards": [
+              {
+                "header": {
+                    "title": "Pull Request",
+                    "subtitle": "Pull Request No: #${{ inputs.prNumber }}"
+                },
+                "sections": [
+                    {
+                        "widgets": [
+                            {
+                                "keyValue": {
+                                    "topLabel": "Creator",
+                                    "content": "${{ inputs.creator }}"
+                                },
+                              },
+                              {
+                                "keyValue": {
+                                    "topLabel": "Repository Name",
+                                    "content": "${{ inputs.repo_name }}"
+                                }
+                              },
+                              {
+                                "keyValue": {
+                                    "topLabel": "Merge Branch",
+                                    "content": "From ${{ inputs.source_branch }} branch >>> ${{ inputs.target_branch }} branch"
+                                }
+                              },
+                              {
+                                "keyValue": {
+                                    "topLabel": "PR Title",
+                                    "content": "${{ inputs.pr_title }}"
+                                }
+                              },
+                              {
+                                "keyValue": {
+                                    "topLabel": "Labels",
+                                    "content": "${{ inputs.label }} "
+                                }
+                              },
+                              {
+                                "keyValue": {
+                                    "topLabel": "Requested Reviewers",
+                                    "content": "- ${{ inputs.reviewer }}"
+                                }
+                              },
+                              {
+                                "keyValue": {
+                                    "topLabel": "Assignees",
+                                    "content": "- ${{ inputs.assigner }}"
+                                }
+                              },
+                              {
+                                "buttons": [
+                                  {
+                                    "textButton": {
+                                      "text": "OPEN PR",
+                                      "onClick": {
+                                        "openLink": {
+                                          "url": "${{ inputs.pr_html_url }}"
+                                        }
+                                      },
+                                    },
+                                  }
+                                ]
+                              },
+                            {
+                              "keyValue": {
+                                  "topLabel": "You are welcome in advance, ${{ inputs.creator }}.",
+                                  "content": "Your dedication and expertise greatly contribute to our project\n success.🫡"
+                              }
+                            },
+                        ]
+                    }
+                ],
+              }
+          ]
+      }'
 
 
