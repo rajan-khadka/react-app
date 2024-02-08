@@ -96,7 +96,7 @@ jobs:
                                   {
                                     "keyValue": {
                                         "topLabel": "Labels",
-                                        "content": "${{ join( github.event.pull_request.labels.*.name, ', ') }}"
+                                        "content": "${{ join( github.event.pull_request.labels.*.name, ', ') }} "
                                     }
                                   },
                                   {
