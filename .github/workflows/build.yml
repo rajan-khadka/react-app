@@ -59,7 +59,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Post Google Chat Message
-        uses: ./.github/actions/pr-notifer
+        uses: ./.github/actions/pr_notifer
         with:
           prNumber: ${{ github.event.pull_request.number }}
           creator: ${{ github.event.pull_request.user.login }}
