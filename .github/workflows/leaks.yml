@@ -1,6 +1,5 @@
 name: GitLeaks
 
-# F81309-B8D02A-F3FE73-5D0403-D33364-V3
 on:
   pull_request:
     branches:
