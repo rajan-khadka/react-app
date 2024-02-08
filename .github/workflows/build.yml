@@ -52,7 +52,6 @@ jobs:
   notify:
     name: Notify PR Created
     runs-on: ubuntu-latest
-    environment: dev
 
     steps:
       - name: Get Code
@@ -62,12 +61,12 @@ jobs:
         uses: ./.github/actions/pr_notifer
         with:
           prNumber: ${{ github.event.pull_request.number }}
-          creator: ${{ github.event.pull_request.user.login }}
-          repo_name: ${{ github.event.repository.name }}
-          source_branch: ${{ github.event.pull_request.head.ref || github.ref }}
-          target_branch: ${{ github.event.pull_request.base.ref }}
-          pr_title: ${{ github.event.pull_request.title }}
-          label: "- ${{ join( github.event.pull_request.labels.*.name, ', ') }}"
-          reviewer: "- ${{ join(github.event.pull_request.requested_reviewers.*.login) }}"
-          assigner: "- ${{ join(github.event.pull_request.assignees.*.login) }}"
-          pr_html_url: ${{ github.event.pull_request.html_url }}
+          # creator: ${{ github.event.pull_request.user.login }}
+          # repo_name: ${{ github.event.repository.name }}
+          # source_branch: ${{ github.event.pull_request.head.ref || github.ref }}
+          # target_branch: ${{ github.event.pull_request.base.ref }}
+          # pr_title: ${{ github.event.pull_request.title }}
+          # label: "- ${{ join( github.event.pull_request.labels.*.name, ', ') }}"
+          # reviewer: "- ${{ join(github.event.pull_request.requested_reviewers.*.login) }}"
+          # assigner: "- ${{ join(github.event.pull_request.assignees.*.login) }}"
+          # pr_html_url: ${{ github.event.pull_request.html_url }}
