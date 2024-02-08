@@ -56,6 +56,9 @@ jobs:
     environment: dev
 
     steps:
+      - name: Get Code
+        uses: actions/checkout@v4
+
       - name: Post Google Chat Message
         uses: ./.github/actions/pr-notifer
         with:
