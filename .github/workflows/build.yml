@@ -60,8 +60,11 @@ jobs:
       - name: Listing
         run: |
           ls -la .github
+          echo "===================="
           ls -la .github/actions
-          ls -la .github/actions/pr_notifier
+          echo "===================="
+          ls -la .github/actions/pr-notifier
+          echo "===================="
 
       - name: Post Google Chat Message
         uses: ./.github/actions/pr-notifier
