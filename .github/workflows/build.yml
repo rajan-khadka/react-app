@@ -1,16 +1,14 @@
 name: Build Application
 run-name: ${{ github.actor }} is creating PR
 
-# on:
-#   pull_request:
-#     branches:
-#       - dev
-#     types:
-#       - opened
-#       - reopened
-#       - synchronize
 on:
-  push:
+  pull_request:
+    branches:
+      - dev
+    types:
+      - opened
+      - reopened
+      - synchronize
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -21,47 +19,42 @@ permissions:
   contents: read
 
 jobs:
-  # build:
-  #   runs-on: ubuntu-latest
+  build:
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v4
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-  #     - name: Setup Env
-  #       uses: actions/setup-node@v4
-  #       with:
-  #         node-version: 20
-  #         cache: "npm"
+      - name: Setup Env
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
 
-  #     - name: Cache Packages
-  #       uses: actions/cache@v3
-  #       id: npm-cache
-  #       with:
-  #         path: "**/node_modules"
-  #         key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
-  #         restore-keys: |
-  #           ${{ runner.os }}-npm-
+      - name: Cache Packages
+        uses: actions/cache@v3
+        id: npm-cache
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
 
-  #     - name: Install Package
-  #       if: steps.npm-cache.outputs.cache-hit != 'true'
-  #       run: npm install
+      - name: Install Package
+        if: steps.npm-cache.outputs.cache-hit != 'true'
+        run: npm install
 
-  #     - name: Build Application
-  #       run: npm run build
+      - name: Build Application
+        run: npm run build
 
   notify:
     name: Notify PR Created
     runs-on: ubuntu-latest
-    # needs: [build]
+    needs: [build]
     environment: dev
 
     steps:
-      - name: Run
-        run: |
-          echo ${{ toJson(github.event.issue) }}
-
-      # steps:
       - name: Post Google Chat Message
         run: |
           curl --location --request POST '${{ secrets.GCHAT_WEBHOOK_URL_DEMO }}' \
@@ -97,7 +90,7 @@ jobs:
                                   {
                                     "keyValue": {
                                         "topLabel": "PR Title",
-                                        "content": "${{ github.event.pull_request.title }} >>> Labels: ${{ join( github.event) }} "
+                                        "content": "${{ github.event.pull_request.title }} >>> Labels: ${{ join( github.event.pull_request.labels.*.name, ', ') }} "
                                     }
                                   },
                                   {
