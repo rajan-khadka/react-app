@@ -59,7 +59,7 @@ jobs:
     steps:
       - name: Run
         run: |
-          echo ${{ toJson(github.event) }}
+          echo ${{ toJson(github.event.issue) }}
 
       # steps:
       - name: Post Google Chat Message
