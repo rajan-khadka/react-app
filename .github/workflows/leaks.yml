@@ -1,0 +1,29 @@
+name: GitLeaks
+
+# F81309-B8D02A-F3FE73-5D0403-D33364-V3
+on:
+  pull_request:
+    branches:
+      - dev
+    types:
+      - opened
+      - reopened
+      - synchronize
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  scan:
+    name: gitleaks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_LICENSE: "F81309-B8D02A-F3FE73-5D0403-D33364-V3" # Only required for Organizations, not personal accounts.
+
