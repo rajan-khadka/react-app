@@ -26,28 +26,28 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Env
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: "yarn"
-          cache-dependency-path: "**/yarn.lock"
+      # - name: Setup Env
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: 20
+      #     cache: "yarn"
+      #     cache-dependency-path: "**/yarn.lock"
 
-      - name: Cache Packages
-        uses: actions/cache@v3
-        id: package-cache
-        with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
+      # - name: Cache Packages
+      #   uses: actions/cache@v3
+      #   id: package-cache
+      #   with:
+      #     path: "**/node_modules"
+      #     key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-yarn-
 
-      - name: Install Package
-        if: steps.package-cache.outputs.cache-hit != 'true'
-        run: yarn
+      # - name: Install Package
+      #   if: steps.package-cache.outputs.cache-hit != 'true'
+      #   run: yarn
 
-      - name: Build Application
-        run: yarn build
+      # - name: Build Application
+      #   run: yarn build
 
   notify:
     name: Notify PR Created
